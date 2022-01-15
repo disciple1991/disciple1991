@@ -1,0 +1,32 @@
+<p>wordlist works!</p>
+
+<form [formGroup]="letterForm" (ngSubmit)="onSubmit()">
+
+  <div>
+    <label for="l1">1st Letter:</label>
+    <input id="l1" type="text" size="1" formControlName="l1">
+  </div>
+
+  <div>
+    <label for="l2">2nd Letter:</label>
+    <input id="l2" type="text" size="1" formControlName="l2">
+  </div>
+
+  <div>
+    <label for="l3">3rd Letter:</label>
+    <input id="l3" type="text" size="1" formControlName="l3">
+  </div>
+
+  <div>
+    <label for="l4">4th Letter:</label>
+    <input id="l4" type="text" size="1" formControlName="l4">
+  </div>
+
+  <div>
+    <label for="l5">5th Letter:</label>
+    <input id="l5" type="text" size="1" formControlName="l5">
+  </div>
+
+  <button class="button" type="submit">Search</button>
+
+</form>
