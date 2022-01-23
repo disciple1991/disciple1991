@@ -439,7 +439,7 @@ module.exports = content.locals || {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/grantmcinnes/repos/ng-wordsearch/src/styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! /Users/grantmcinnes/repos/disciple1991/ng-wordsearch/src/styles.css */"./src/styles.css");
 
 
 /***/ })

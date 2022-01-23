@@ -179,114 +179,87 @@ class WordlistComponent {
         this.formBuilder = formBuilder;
         this.wordService = wordService;
         this.letterForm = this.formBuilder.group({
-            l1: '',
-            l2: '',
-            l3: '',
-            l4: '',
-            l5: ''
+            lettersInWord: '',
+            lettersNotInWord: ''
         });
     }
     ngOnInit() {
         // this.letterForm.controls['l1'].setValue('a');
         this.wordofthedayList = this.wordService.getWordOfTheDayList();
+        this.wordsLeft = '';
     }
     onSubmit() {
-        let lCount = 0;
-        const l1 = this.letterForm.controls['l1'].value;
-        const l2 = this.letterForm.controls['l2'].value;
-        const l3 = this.letterForm.controls['l3'].value;
-        const l4 = this.letterForm.controls['l4'].value;
-        const l5 = this.letterForm.controls['l5'].value;
-        if (l1.toString() != '')
-            lCount = lCount + 1;
-        if (l2.toString() != '')
-            lCount = lCount + 1;
-        if (l3.toString() != '')
-            lCount = lCount + 1;
-        if (l4.toString() != '')
-            lCount = lCount + 1;
-        if (l5.toString() != '')
-            lCount = lCount + 1;
-        if (lCount >= 3) {
-            this.wordofthedayList.forEach(element => {
-                switch (lCount) {
-                    case 5:
-                        if (element.includes(l1) && element.includes(l2)
-                            && element.includes(l3) && element.includes(l4) && element.includes(l5)) {
-                            console.log(element);
-                        }
-                        break;
-                    case 4:
-                        if (element.includes(l1) && element.includes(l2)
-                            && element.includes(l3) && element.includes(l4)) {
-                            console.log(element);
-                        }
-                        break;
-                    case 3:
-                        if (element.includes(l1) && element.includes(l2)
-                            && element.includes(l3)) {
-                            console.log(element);
-                        }
-                        break;
-                    default:
-                        break;
+        this.wordsLeft = '';
+        this.wordofthedayfilteredList = [''];
+        const lettersInWord = this.letterForm.controls['lettersInWord'].value;
+        const lettersNotInWord = this.letterForm.controls['lettersNotInWord'].value;
+        this.lettersInWordArray = Array.from(lettersInWord);
+        this.lettersNotInWordArray = Array.from(lettersNotInWord);
+        this.wordofthedayList.forEach(element => {
+            let counter = 0;
+            // look for words that contain the letters
+            for (let index = 0; index < this.lettersInWordArray.length; index++) {
+                const letter = this.lettersInWordArray[index];
+                if (element.includes(letter)) {
+                    counter++;
                 }
-            });
-        }
-        this.letterForm.reset();
+            }
+            // if word contains all the letters
+            if (counter == this.lettersInWordArray.length) {
+                this.wordofthedayfilteredList.push(element);
+            }
+        });
+        this.wordofthedayfilteredList.forEach(element => {
+            let counter = 0;
+            // look for words that don't contain the letters
+            for (let index = 0; index < this.lettersNotInWordArray.length; index++) {
+                const letter = this.lettersNotInWordArray[index];
+                if (!element.includes(letter)) {
+                    counter++;
+                }
+            }
+            // add word if these letters are not in the word
+            if (counter == this.lettersNotInWordArray.length) {
+                this.wordsLeft += element + ' ';
+            }
+        });
+        // this.letterForm.reset();
     }
 }
 WordlistComponent.ɵfac = function WordlistComponent_Factory(t) { return new (t || WordlistComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormBuilder"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_wordoftheday_service__WEBPACK_IMPORTED_MODULE_2__["WordofthedayService"])); };
-WordlistComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: WordlistComponent, selectors: [["app-wordlist"]], decls: 29, vars: 1, consts: [[3, "formGroup", "ngSubmit"], ["for", "l1"], ["id", "l1", "type", "text", "size", "1", "formControlName", "l1"], ["for", "l2"], ["id", "l2", "type", "text", "size", "1", "formControlName", "l2"], ["for", "l3"], ["id", "l3", "type", "text", "size", "1", "formControlName", "l3"], ["for", "l4"], ["id", "l4", "type", "text", "size", "1", "formControlName", "l4"], ["for", "l5"], ["id", "l5", "type", "text", "size", "1", "formControlName", "l5"], ["for", "address"], ["id", "address", "type", "text", "formControlName", "address"], ["type", "submit", 1, "button"]], template: function WordlistComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "p");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](1, "wordlist works!");
+WordlistComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: WordlistComponent, selectors: [["app-wordlist"]], decls: 17, vars: 2, consts: [[3, "formGroup", "ngSubmit"], [1, "form-group"], ["for", "lettersInWord"], ["id", "lettersInWord", "type", "text", "maxlength", "5", "formControlName", "lettersInWord", 1, "form-control"], ["for", "lettersNotInWord"], ["id", "lettersNotInWord", "type", "text", "maxlength", "24", "formControlName", "lettersNotInWord", 1, "form-control"], ["type", "submit", 1, "button"], ["id", "lblwordsLeft"]], template: function WordlistComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "form", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function WordlistComponent_Template_form_ngSubmit_0_listener() { return ctx.onSubmit(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "label", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, "Letters Found:");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "form", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function WordlistComponent_Template_form_ngSubmit_2_listener() { return ctx.onSubmit(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](3, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "label", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](5, "1st Letter:");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "input", 3);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](6, "input", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "div", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "label", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](7, "Letters Used:");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](7, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](8, "label", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](9, "2nd Letter:");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](8, "input", 5);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](10, "input", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](9, "button", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](10, "Find");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](11, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](12, "label", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](13, "3rd Letter:");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](14, "input", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](11, "br");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementContainerStart"](12);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](13, "label", 7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](14);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](16, "label", 7);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](17, "4th Letter:");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](18, "input", 8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](19, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](20, "label", 9);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](21, "5th Letter:");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](22, "input", 10);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](23, "div");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](24, "label", 11);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](25, " Address ");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](26, "input", 12);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](27, "button", 13);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](28, "Purchase");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementContainerEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](15, "p");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](16, "Word Helper");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("formGroup", ctx.letterForm);
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlName"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3dvcmRsaXN0L3dvcmRsaXN0LmNvbXBvbmVudC5jc3MifQ== */"] });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](14);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.wordsLeft, " ");
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupDirective"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["MaxLengthValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlName"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3dvcmRsaXN0L3dvcmRsaXN0LmNvbXBvbmVudC5jc3MifQ== */", "label[_ngcontent-%COMP%] {\n  white-space: pre-wrap;\n}"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](WordlistComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -397,7 +370,7 @@ _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["platformBrowser"]().boot
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/grantmcinnes/repos/ng-wordsearch/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/grantmcinnes/repos/disciple1991/ng-wordsearch/src/main.ts */"./src/main.ts");
 
 
 /***/ })
